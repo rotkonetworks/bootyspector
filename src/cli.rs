@@ -7,12 +7,15 @@ use clap::Parser;
 #[derive(Parser, Debug, Clone)]
 #[command(author, version, about = "Parallel bootnode tester for Polkadot networks")]
 pub struct Cli {
+    /// path to the polkadot binary
     #[arg(long, default_value = "/usr/local/bin/polkadot")]
     pub polkadot_binary: PathBuf,
 
+    /// path to the parachain binary
     #[arg(long, default_value = "/usr/local/bin/polkadot-parachain")]
     pub parachain_binary: PathBuf,
 
+    /// path to the encointer binary
     #[arg(long, default_value = "/usr/local/bin/encointer")]
     pub encointer_binary: PathBuf,
 
@@ -22,11 +25,16 @@ pub struct Cli {
     #[arg(long, default_value = "/tmp/bootnode_data")]
     pub data_dir: PathBuf,
 
+    /// path to the chain spec directory
     #[arg(long, default_value = "./chain-spec")]
     pub chain_spec_dir: PathBuf,
 
     #[arg(long, default_value = "10")]
     pub max_concurrent: usize,
+
+    /// test interval in seconds
+    #[arg(long, default_value = "3600")]
+    pub interval: u64,
 
     #[arg(long, default_value = "49615")]
     pub base_port: u16,
@@ -34,9 +42,11 @@ pub struct Cli {
     #[arg(long, default_value = "9615")]
     pub prometheus_port: u16,
 
+    /// test ttl in seconds
     #[arg(long, default_value = "30")]
     pub timeout: u64,
 
+    /// path to the bootnodes config file
     #[arg(long, default_value = "bootnodes.json")]
     pub bootnodes_config: PathBuf,
 
