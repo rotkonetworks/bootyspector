@@ -44,6 +44,7 @@ pub struct NodeProcess {
     operator: String,
     network: String,
     bootnode: String,
+    cli: Cli,
 }
 
 pub async fn spawn_node(
@@ -117,6 +118,7 @@ pub async fn spawn_node(
         bootnode: bootnode.to_string(),
         operator: operator.to_string(),
         network: network.to_string(),
+        cli: cli.clone(),
     })
 }
 
@@ -214,8 +216,8 @@ impl NodeProcess {
         while Instant::now() < end_time {
             match self.check_discovered_peers().await {
                 Ok(metrics) => match metrics.status {
-                    MetricsStatus::Available if metrics.peers > 0 => {
-                        info!("{} Bootnode working for {}/{} - discovered {} peers", 
+                    MetricsStatus::Available if metrics.peers >= self.cli.min_peers => {
+                        info!("{} Bootnode working for {}/{} - discovered {} peers",
                             EMOJI_SUCCESS, self.operator, self.network, metrics.peers);
                         return Ok((metrics.peers, TestStatus::Success, None));
                     }
@@ -308,7 +310,7 @@ pub async fn test_bootnode(
         id: operator.to_string(),
         network: network.to_string(),
         bootnode: bootnode.to_string(),
-        valid: discovered_peers > 1,
+        valid: discovered_peers > cli.min_peers,
         test_duration_ms: duration,
         discovered_peers,
         status,

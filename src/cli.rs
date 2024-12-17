@@ -29,8 +29,13 @@ pub struct Cli {
     #[arg(long, default_value = "./chain-spec")]
     pub chain_spec_dir: PathBuf,
 
-    #[arg(long, default_value = "10")]
+    /// maximum number of concurrent tests
+    #[arg(long, default_value = "1")]
     pub max_concurrent: usize,
+
+    /// minimum number of peers to pass
+    #[arg(long, default_value = "2")]
+    pub min_peers: u64,
 
     /// test interval in seconds
     #[arg(long, default_value = "3600")]
