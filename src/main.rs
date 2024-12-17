@@ -149,8 +149,8 @@ async fn main() -> Result<()> {
     let metrics_handle = MetricsHandle::new()?;
     let metrics_state = metrics_handle.state.clone();
 
-    // Start metrics server
-    tokio::spawn(metrics_handle.serve(9091));
+    // metrics server
+    tokio::spawn(metrics_handle.serve(cli.prometheus_port));
 
     NEXT_PORT.store(cli.base_port, Ordering::SeqCst);
     fs::create_dir_all(&cli.output_dir)?;
@@ -161,7 +161,7 @@ async fn main() -> Result<()> {
 
     let semaphore = Arc::new(Semaphore::new(cli.max_concurrent));
     
-    // Run continuous test cycles
+    // continuous cycles
     info!("Starting continuous bootnode testing...");
     loop {
         let cycle_start = std::time::Instant::now();
@@ -191,7 +191,7 @@ async fn main() -> Result<()> {
         // Wait before starting the next cycle
         // Calculate delay to maintain consistent cycle time
         let cycle_duration = cycle_start.elapsed();
-        let target_cycle_time = Duration::from_secs(3600); // 60 minutes per cycle
+        let target_cycle_time = Duration::from_secs(cli.interval);
         if cycle_duration < target_cycle_time {
             let delay = target_cycle_time - cycle_duration;
             info!("Waiting {:?} before next cycle", delay);
