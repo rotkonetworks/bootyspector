@@ -1,0 +1,209 @@
+{
+  "polkadot": {
+    "commandId": "polkadot",
+    "members": {
+      "rotko": [
+        "/dns/polkadot.boot.rotko.net/tcp/31001/p2p/12D3KooWPyEvPEXghnMC67Gff6PuZiSvfx3fmziKiPZcGStZ5xff",
+        "/dns/polkadot.boot.rotko.net/tcp/30335/wss/p2p/12D3KooWPyEvPEXghnMC67Gff6PuZiSvfx3fmziKiPZcGStZ5xff"
+      ]
+    }
+  },
+  "kusama": {
+    "commandId": "polkadot",
+    "members": {
+      "rotko": [
+        "/dns/kusama.boot.rotko.net/tcp/32001/p2p/12D3KooWAa5THTw8HPfnhEei23HdL8P9McBXdozG2oTtMMksjZkK",
+        "/dns/kusama.boot.rotko.net/tcp/30335/wss/p2p/12D3KooWAa5THTw8HPfnhEei23HdL8P9McBXdozG2oTtMMksjZkK"
+      ]
+    }
+  },
+  "westend": {
+    "commandId": "polkadot",
+    "members": {
+      "rotko": [
+        "/dns/westend.boot.rotko.net/tcp/33001/p2p/12D3KooWLK8Zj1uZ46phU3vQwiDVda8tB76S8J26rXZQLHpwWkDJ",
+        "/dns/westend.boot.rotko.net/tcp/30335/wss/p2p/12D3KooWLK8Zj1uZ46phU3vQwiDVda8tB76S8J26rXZQLHpwWkDJ"
+      ]
+    }
+  },
+  "paseo": {
+    "commandId": "polkadot",
+    "members": {
+      "rotko": [
+        "/dns/paseo.boot.rotko.net/tcp/34001/p2p/12D3KooWRH8eBMhw8c7bucy6pJfy94q4dKpLkF3pmeGohHmemdRu",
+        "/dns/paseo.boot.rotko.net/tcp/30335/wss/p2p/12D3KooWRH8eBMhw8c7bucy6pJfy94q4dKpLkF3pmeGohHmemdRu"
+      ]
+    }
+  },
+  "asset-hub-polkadot": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/asset-hub-polkadot.boot.rotko.net/tcp/31011/p2p/12D3KooWKkzLjYF6M5eEs7nYiqEtRqY8SGVouoCwo3nCWsRnThDW",
+        "/dns/asset-hub-polkadot.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWKkzLjYF6M5eEs7nYiqEtRqY8SGVouoCwo3nCWsRnThDW"
+      ]
+    }
+  },
+  "asset-hub-kusama": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/asset-hub-kusama.boot.rotko.net/tcp/32011/p2p/12D3KooWJUFnjR2PNbsJhudwPVaWCoZy1acPGKjM2cSuGj345BBu",
+        "/dns/asset-hub-kusama.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWJUFnjR2PNbsJhudwPVaWCoZy1acPGKjM2cSuGj345BBu"
+      ]
+    }
+  },
+  "asset-hub-westend": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/asset-hub-westend.boot.rotko.net/tcp/33011/p2p/12D3KooWE4UDXqgtTcMCyUQ8S4uvaT8VMzzTBA6NWmKuYwTacWuN",
+        "/dns/asset-hub-westend.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWE4UDXqgtTcMCyUQ8S4uvaT8VMzzTBA6NWmKuYwTacWuN"
+      ]
+    }
+  },
+  "asset-hub-paseo": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/asset-hub-paseo.boot.rotko.net/tcp/34011/p2p/12D3KooWLzC336hvwY7Vyjdwc8VMMMyqnwph1UXMoi1LEbw8RiHj",
+        "/dns/asset-hub-paseo.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWLzC336hvwY7Vyjdwc8VMMMyqnwph1UXMoi1LEbw8RiHj"
+      ]
+    }
+  },
+  "bridge-hub-polkadot": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/bridge-hub-polkadot.boot.rotko.net/tcp/31021/p2p/12D3KooWMxZY7tDc2Rh454VaJJ7RexKAXVS6xSBEvTnXSGCnuGDw",
+        "/dns/bridge-hub-polkadot.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWMxZY7tDc2Rh454VaJJ7RexKAXVS6xSBEvTnXSGCnuGDw"
+      ]
+    }
+  },
+  "bridge-hub-kusama": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/bridge-hub-kusama.boot.rotko.net/tcp/32021/p2p/12D3KooWAmBp54mUEYtvsk2kxNEsDbAvdUMcaghxKXgUQxmPEQ66",
+        "/dns/bridge-hub-kusama.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWAmBp54mUEYtvsk2kxNEsDbAvdUMcaghxKXgUQxmPEQ66"
+      ]
+    }
+  },
+  "bridge-hub-westend": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/bridge-hub-westend.boot.rotko.net/tcp/33021/p2p/12D3KooWJyeRHpxZZbfBCNEgeUFzmRC5AMSAs2tJhjJS1k5hULkD",
+        "/dns/bridge-hub-westend.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWJyeRHpxZZbfBCNEgeUFzmRC5AMSAs2tJhjJS1k5hULkD"
+      ]
+    }
+  },
+  "bridge-hub-paseo": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/bridge-hub-paseo.boot.rotko.net/tcp/34021/p2p/12D3KooWS7FsgLf2WE7otd9fizJrJ9C7vsw5kh6BsySfMpziHTkU",
+        "/dns/bridge-hub-paseo.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWS7FsgLf2WE7otd9fizJrJ9C7vsw5kh6BsySfMpziHTkU"
+      ]
+    }
+  },
+  "collectives-polkadot": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/collectives-polkadot.boot.rotko.net/tcp/31031/p2p/12D3KooWKrm3XmuGzJH17Wcn4HRDGsEjLZGDgN77q3ZhwnnQP7y1",
+        "/dns/collectives-polkadot.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWKrm3XmuGzJH17Wcn4HRDGsEjLZGDgN77q3ZhwnnQP7y1"
+      ]
+    }
+  },
+  "encointer-kusama": {
+    "commandId": "encointer",
+    "members": {
+      "rotko": [
+        "/dns/encointer-kusama.boot.rotko.net/tcp/32061/p2p/12D3KooWJ3327ZoZcR96pToGsXa8Xbehh8z25daxYseYXF46UDCZ",
+        "/dns/encointer-kusama.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWJ3327ZoZcR96pToGsXa8Xbehh8z25daxYseYXF46UDCZ"
+      ]
+    }
+  },
+  "collectives-westend": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/collectives-westend.boot.rotko.net/tcp/33031/p2p/12D3KooWPG85zhuSRoyptjLkFD4iJFistjiBmc15JgQ96B4fdXYr",
+        "/dns/collectives-westend.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWPG85zhuSRoyptjLkFD4iJFistjiBmc15JgQ96B4fdXYr"
+      ]
+    }
+  },
+  "people-polkadot": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/people-polkadot.boot.rotko.net/tcp/31041/p2p/12D3KooWLg9NPeDFoL54A7WfuHSM3YNxPBGVRAd9ZY6rmVfdT6GJ",
+        "/dns/people-polkadot.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWLg9NPeDFoL54A7WfuHSM3YNxPBGVRAd9ZY6rmVfdT6GJ"
+      ]
+    }
+  },
+  "people-kusama": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/people-kusama.boot.rotko.net/tcp/32041/p2p/12D3KooWSKQwgoydfbN6mNN2aNwdqfkR2ExAnTRs8mmdrPQTtDLo",
+        "/dns/people-kusama.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWSKQwgoydfbN6mNN2aNwdqfkR2ExAnTRs8mmdrPQTtDLo"
+      ]
+    }
+  },
+  "people-westend": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/people-westend.boot.rotko.net/tcp/33041/p2p/12D3KooWHwUXBUo2WRMUBwPLC2ttVbnEk1KvDyESYAeKcNoCn7WS",
+        "/dns/people-westend.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWHwUXBUo2WRMUBwPLC2ttVbnEk1KvDyESYAeKcNoCn7WS"
+      ]
+    }
+  },
+  "people-paseo": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/people-paseo.boot.rotko.net/tcp/34041/p2p/12D3KooWBbvBNSaUZsHoXfBYV1GdtAKRHDGb4eKiiG4nPJi5i2a7",
+        "/dns/people-paseo.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWBbvBNSaUZsHoXfBYV1GdtAKRHDGb4eKiiG4nPJi5i2a7"
+      ]
+    }
+  },
+  "coretime-polkadot": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/coretime-polkadot.boot.rotko.net/tcp/31051/p2p/12D3KooWPk5pR5QxWGVJ1YVWnXd4rkVTZ194iay58rAfcSHDpky3",
+        "/dns/coretime-polkadot.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWPk5pR5QxWGVJ1YVWnXd4rkVTZ194iay58rAfcSHDpky3"
+      ]
+    }
+  },
+  "coretime-kusama": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/coretime-kusama.boot.rotko.net/tcp/32051/p2p/12D3KooWCyPSkk5cq2eEdw1qHizfa6UT4QggSarCEtcvNXpnod8B",
+        "/dns/coretime-kusama.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWCyPSkk5cq2eEdw1qHizfa6UT4QggSarCEtcvNXpnod8B"
+      ]
+    }
+  },
+  "coretime-westend": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/coretime-westend.boot.rotko.net/tcp/33051/p2p/12D3KooWFmGg7EGzxGDawuJ9EfyEznCrZfMJgGa4eHpMWjcJmg85",
+        "/dns/coretime-westend.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWFmGg7EGzxGDawuJ9EfyEznCrZfMJgGa4eHpMWjcJmg85"
+      ]
+    }
+  },
+  "coretime-paseo": {
+    "commandId": "parachain",
+    "members": {
+      "rotko": [
+        "/dns/coretime-paseo.boot.rotko.net/tcp/34051/p2p/12D3KooWELkr2WfNmAB399CUMpujUZ5Wi87JyCivi8cQ8vonYufF",
+        "/dns/coretime-paseo.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWELkr2WfNmAB399CUMpujUZ5Wi87JyCivi8cQ8vonYufF"
+      ]
+    }
+  }
+}
