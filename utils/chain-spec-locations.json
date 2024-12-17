@@ -58,5 +58,9 @@
     "bridge-hub-paseo": "https://github.com/paseo-network/paseo-chain-specs/raw/refs/heads/main/paseo-bridge-hub.raw.json",
     "coretime-paseo": "https://github.com/paseo-network/paseo-chain-specs/raw/refs/heads/main/paseo-coretime.raw.json",
     "people-paseo": "https://github.com/paseo-network/paseo-chain-specs/raw/refs/heads/main/paseo-people.raw.json"
+  },
+  "acala": {
+    "acala": "https://raw.githubusercontent.com/AcalaNetwork/Acala/refs/heads/master/resources/acala-dist.json",
+    "karura": "https://raw.githubusercontent.com/AcalaNetwork/Acala/refs/heads/master/resources/karura-dist.json"
   }
 }
