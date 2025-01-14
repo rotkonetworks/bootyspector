@@ -43,7 +43,6 @@ pub struct NodeProcess {
     data_dir: PathBuf,
     prometheus_port: u16,
     p2p_port: u16,
-    start_time: Instant,
     operator: String,
     network: String,
     bootnode: String,
@@ -116,7 +115,6 @@ pub async fn spawn_node(
         data_dir,
         prometheus_port,
         p2p_port,
-        start_time: Instant::now(),
         bootnode: bootnode.to_string(),
         operator: operator.to_string(),
         network: network.to_string(),
@@ -139,7 +137,6 @@ impl NodeProcess {
     fn create_metrics_result(&self, peer_data: HashMap<String, u64>) -> MetricsResult {
         MetricsResult {
             peers: peer_data.get("discovered").copied().unwrap_or(0),
-            peer_types: Some(peer_data.clone()),
             status: if peer_data.contains_key("discovered") {
                 MetricsStatus::Available
             } else {
@@ -329,17 +326,6 @@ impl NodeProcess {
                                     self.network
                                 );
                                 return Ok((0, TestStatus::NoMetricFound, None));
-                            }
-                            sleep(Duration::from_secs(1)).await;
-                        }
-                        MetricsStatus::Unavailable(error) => {
-                            consecutive_failures += 1;
-                            if consecutive_failures >= MAX_CONSECUTIVE_FAILURES {
-                                error!(
-                                    "{} Metrics consistently unavailable for {}/{}: {}",
-                                    EMOJI_ERROR, self.operator, self.network, error
-                                );
-                                return Ok((0, TestStatus::MetricsUnavailable, Some(error)));
                             }
                             sleep(Duration::from_secs(1)).await;
                         }

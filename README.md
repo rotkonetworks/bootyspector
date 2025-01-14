@@ -19,3 +19,28 @@ cargo run --release -- \
   --config custom-bootnodes.json \
   --debug
 ```
+
+# prometheus alerting rules:
+
+```yaml
+groups:
+- name: bootnode_alerts
+ rules:
+ - alert: BootnodeDown
+   expr: bootnode_status == 0
+   for: 5m
+   labels:
+     severity: critical
+   annotations:
+     summary: "Bootnode {{ $labels.provider }}/{{ $labels.network }} is down"
+     description: "Bootnode has failed with reason: {{ $labels.failure_reason }}"
+
+ - alert: SlowBootnodeChecks
+   expr: bootnode_check_duration_ms > 30000
+   for: 5m
+   labels:
+     severity: warning
+   annotations:
+     summary: "Slow bootnode checks"
+     description: "Check duration > 30s for {{ $labels.provider }}/{{ $labels.network }}"
+```
