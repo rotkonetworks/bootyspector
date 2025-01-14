@@ -1,11 +1,15 @@
 // src/cli.rs
 use anyhow::Result;
-use serde::Deserialize;
-use std::{path::PathBuf, fs};
 use clap::Parser;
+use serde::Deserialize;
+use std::{fs, path::PathBuf};
 
 #[derive(Parser, Debug, Clone)]
-#[command(author, version, about = "Parallel bootnode tester for Polkadot networks")]
+#[command(
+    author,
+    version,
+    about = "Parallel bootnode tester for Polkadot networks"
+)]
 pub struct Cli {
     /// path to the polkadot binary
     #[arg(long, default_value = "/usr/local/bin/polkadot")]
@@ -90,15 +94,33 @@ pub struct NetworkConfig {
 
 impl Cli {
     pub fn merge_with_toml(&mut self, config: TomlConfig) {
-        if let Some(v) = config.polkadot_binary { self.polkadot_binary = v; }
-        if let Some(v) = config.parachain_binary { self.parachain_binary = v; }
-        if let Some(v) = config.output_dir { self.output_dir = v; }
-        if let Some(v) = config.data_dir { self.data_dir = v; }
-        if let Some(v) = config.chain_spec_dir { self.chain_spec_dir = v; }
-        if let Some(v) = config.max_concurrent { self.max_concurrent = v; }
-        if let Some(v) = config.base_port { self.base_port = v; }
-        if let Some(v) = config.timeout { self.timeout = v; }
-        if let Some(v) = config.bootnodes_config { self.bootnodes_config = v; }
+        if let Some(v) = config.polkadot_binary {
+            self.polkadot_binary = v;
+        }
+        if let Some(v) = config.parachain_binary {
+            self.parachain_binary = v;
+        }
+        if let Some(v) = config.output_dir {
+            self.output_dir = v;
+        }
+        if let Some(v) = config.data_dir {
+            self.data_dir = v;
+        }
+        if let Some(v) = config.chain_spec_dir {
+            self.chain_spec_dir = v;
+        }
+        if let Some(v) = config.max_concurrent {
+            self.max_concurrent = v;
+        }
+        if let Some(v) = config.base_port {
+            self.base_port = v;
+        }
+        if let Some(v) = config.timeout {
+            self.timeout = v;
+        }
+        if let Some(v) = config.bootnodes_config {
+            self.bootnodes_config = v;
+        }
     }
 
     pub fn load() -> Result<Self> {

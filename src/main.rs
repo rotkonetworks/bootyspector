@@ -45,13 +45,8 @@ async fn run_test_cycle(
 
                 tasks.push(tokio::spawn(async move {
                     let _permit = semaphore.acquire().await?;
-                    let result = test_bootnode(
-                        &cli,
-                        &operator,
-                        &network,
-                        &bootnode,
-                        &command_id,
-                    ).await?;
+                    let result =
+                        test_bootnode(&cli, &operator, &network, &bootnode, &command_id).await?;
 
                     metrics.record_test_result(&network, &operator, &bootnode, &result);
                     Ok::<_, anyhow::Error>(result)
@@ -80,7 +75,8 @@ async fn run_test_cycle(
                     &test_result.id,
                     &test_result.network,
                     &test_result,
-                ).await?;
+                )
+                .await?;
             }
             Err(e) => {
                 error!("Test failed: {}", e);
@@ -123,10 +119,7 @@ async fn update_results(
             .as_object_mut()
             .context("Invalid JSON structure")?;
 
-        operator_obj.insert(
-            network.to_string(),
-            serde_json::to_value(result)?,
-        );
+        operator_obj.insert(network.to_string(), serde_json::to_value(result)?);
     }
 
     let tmp_file = output_file.with_extension("tmp");
@@ -141,10 +134,12 @@ async fn update_results(
 async fn main() -> Result<()> {
     let cli = Cli::load()?;
 
-    let log_level = if cli.debug { tracing::Level::DEBUG } else { tracing::Level::INFO };
-    tracing_subscriber::fmt()
-        .with_max_level(log_level)
-        .init();
+    let log_level = if cli.debug {
+        tracing::Level::DEBUG
+    } else {
+        tracing::Level::INFO
+    };
+    tracing_subscriber::fmt().with_max_level(log_level).init();
 
     let metrics_handle = MetricsHandle::new()?;
     let metrics_state = metrics_handle.state.clone();
@@ -156,16 +151,16 @@ async fn main() -> Result<()> {
     fs::create_dir_all(&cli.output_dir)?;
 
     let bootnodes: cli::BootnodesConfig = serde_json::from_reader(
-        File::open(&cli.bootnodes_config).context("Failed to open bootnodes config")?
+        File::open(&cli.bootnodes_config).context("Failed to open bootnodes config")?,
     )?;
 
     let semaphore = Arc::new(Semaphore::new(cli.max_concurrent));
-    
+
     // continuous cycles
     info!("Starting continuous bootnode testing...");
     loop {
         let cycle_start = std::time::Instant::now();
-        
+
         match run_test_cycle(&cli, &bootnodes, metrics_state.clone(), semaphore.clone()).await {
             Ok(summary) => {
                 info!(

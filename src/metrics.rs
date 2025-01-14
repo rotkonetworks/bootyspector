@@ -62,52 +62,55 @@ impl MetricsState {
 
         let discovered_peers = IntGaugeVec::new(
             prometheus::opts!("bootnode_discovered_peers", "Number of peers discovered"),
-            &["network", "provider", "bootnode_type", "protocol"]
+            &["network", "provider", "bootnode_type", "protocol"],
         )?;
 
         let test_duration = IntGaugeVec::new(
             prometheus::opts!("bootnode_test_duration_ms", "Test duration in milliseconds"),
-            &["network", "provider", "bootnode_type"]
+            &["network", "provider", "bootnode_type"],
         )?;
 
         let test_success = IntGaugeVec::new(
             prometheus::opts!("bootnode_test_success", "Test success status"),
-            &["network", "provider", "bootnode_type"]
+            &["network", "provider", "bootnode_type"],
         )?;
 
         let connection_type_success = IntGaugeVec::new(
             prometheus::opts!("bootnode_connection_success", "Connection success by type"),
-            &["network", "provider", "protocol"]
+            &["network", "provider", "protocol"],
         )?;
 
         let failure_reasons = IntGaugeVec::new(
             prometheus::opts!("bootnode_failure_reasons", "Detailed failure reasons"),
-            &["network", "provider", "reason"]
+            &["network", "provider", "reason"],
         )?;
 
         let dns_resolution_time = IntGaugeVec::new(
             prometheus::opts!("bootnode_dns_resolution_ms", "DNS resolution time"),
-            &["network", "provider", "hostname"]
+            &["network", "provider", "hostname"],
         )?;
 
         let chain_sync_progress = IntGaugeVec::new(
             prometheus::opts!("bootnode_chain_sync_progress", "Chain sync progress"),
-            &["network", "provider"]
+            &["network", "provider"],
         )?;
 
         let peer_count_by_type = IntGaugeVec::new(
             prometheus::opts!("bootnode_peer_count_by_type", "Peer count by type"),
-            &["network", "provider", "peer_type"]
+            &["network", "provider", "peer_type"],
         )?;
 
         let peer_connections = IntGaugeVec::new(
-            prometheus::opts!("bootnode_peer_connections", "Current number of peer connections"),
-            &["network", "provider", "direction"]
+            prometheus::opts!(
+                "bootnode_peer_connections",
+                "Current number of peer connections"
+            ),
+            &["network", "provider", "direction"],
         )?;
 
         let network_state = IntGaugeVec::new(
             prometheus::opts!("bootnode_network_state", "Network state indicators"),
-            &["network", "provider", "state_type"]
+            &["network", "provider", "state_type"],
         )?;
 
         // Register all metrics
@@ -122,18 +125,21 @@ impl MetricsState {
         registry.register(Box::new(peer_connections.clone()))?;
         registry.register(Box::new(network_state.clone()))?;
 
-        Ok((Self {
-            discovered_peers,
-            test_duration,
-            test_success,
-            connection_type_success,
-            failure_reasons,
-            dns_resolution_time,
-            chain_sync_progress,
-            peer_count_by_type,
-            peer_connections,
-            network_state,
-        }, registry))
+        Ok((
+            Self {
+                discovered_peers,
+                test_duration,
+                test_success,
+                connection_type_success,
+                failure_reasons,
+                dns_resolution_time,
+                chain_sync_progress,
+                peer_count_by_type,
+                peer_connections,
+                network_state,
+            },
+            registry,
+        ))
     }
 
     pub fn record_test_result(
@@ -143,8 +149,16 @@ impl MetricsState {
         bootnode: &str,
         result: &TestResult,
     ) {
-        let bootnode_type = if network.contains('-') { "parachain" } else { "relay" };
-        let protocol = if bootnode.contains("/wss/") { "websocket" } else { "tcp" };
+        let bootnode_type = if network.contains('-') {
+            "parachain"
+        } else {
+            "relay"
+        };
+        let protocol = if bootnode.contains("/wss/") {
+            "websocket"
+        } else {
+            "tcp"
+        };
 
         // Record discovered peers
         self.discovered_peers
@@ -204,12 +218,7 @@ impl MetricsState {
             .set(duration_ms as i64);
     }
 
-    pub fn _record_chain_sync(
-        &self,
-        network: &str,
-        provider: &str,
-        progress: u64,
-    ) {
+    pub fn _record_chain_sync(&self, network: &str, provider: &str, progress: u64) {
         self.chain_sync_progress
             .with_label_values(&[network, provider])
             .set(progress as i64);
@@ -249,7 +258,8 @@ impl MetricsHandle {
             let encoder = TextEncoder::new();
             let metric_families = self.registry.gather();
             let mut buffer = Vec::new();
-            encoder.encode(&metric_families, &mut buffer)
+            encoder
+                .encode(&metric_families, &mut buffer)
                 .unwrap_or_else(|e| {
                     error!("Failed to encode metrics: {}", e);
                 });
@@ -259,9 +269,7 @@ impl MetricsHandle {
             })
         });
 
-        warp::serve(metrics_route)
-            .run(([127, 0, 0, 1], port))
-            .await;
+        warp::serve(metrics_route).run(([127, 0, 0, 1], port)).await;
         Ok(())
     }
 }
