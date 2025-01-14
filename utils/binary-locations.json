@@ -1,11 +1,11 @@
 {
-  "polkadot": "https://github.com/paritytech/polkadot-sdk/releases/download/polkadot-stable2409-2/polkadot",
-  "polkadot-parachain": "https://github.com/paritytech/polkadot-sdk/releases/download/polkadot-stable2409-2/polkadot-parachain",
-  "polkadot-omninode": "",
+  "polkadot": "https://github.com/paritytech/polkadot-sdk/releases/download/polkadot-stable2412/polkadot",
+  "polkadot-parachain": "https://github.com/paritytech/polkadot-sdk/releases/download/polkadot-stable2412/polkadot-parachain",
+  "polkadot-omninode": "https://github.com/paritytech/polkadot-sdk/releases/download/polkadot-stable2412/polkadot-omni-node",
   "encointer": "https://github.com/encointer/encointer-node/releases/download/1.14.3/encointer-node-notee",
   "hydration": "https://github.com/galacticcouncil/hydration-node/releases/download/v33.0.0/hydradx",
   "moonbeam": "https://github.com/moonbeam-foundation/moonbeam/releases/download/v0.42.1/moonbeam",
   "hyperbridge": "https://github.com/polytope-labs/hyperbridge/releases/download/hyperbridge-v1.0.0/hyperbridge-x86_64-unknown-linux-gnu.tar.gz",
   "kilt": "https://github.com/KILTprotocol/kilt-node",
-  "acala": "https://github.com/AcalaNetwork/Acala",
+  "acala": "https://github.com/AcalaNetwork/Acala"
 }
