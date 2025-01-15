@@ -100,7 +100,7 @@
   "moonbeam": {
     "moonbeam": "https://raw.githubusercontent.com/moonbeam-foundation/moonbeam/refs/heads/master/specs/moonbeam/parachain-embedded-specs.json",
     "moonriver": "https://raw.githubusercontent.com/moonbeam-foundation/moonbeam/refs/heads/master/specs/moonriver/parachain-embedded-specs.json",
-    "moonbase alpha": "https://raw.githubusercontent.com/moonbeam-foundation/moonbeam/refs/heads/master/specs/alphanet/parachain-embedded-specs-v8.json"
+    "moonbase-alpha": "https://raw.githubusercontent.com/moonbeam-foundation/moonbeam/refs/heads/master/specs/alphanet/parachain-embedded-specs-v8.json"
   },
   "polimec": {
     "polimec-polkadot": "https://raw.githubusercontent.com/Polimec/polimec-node/refs/heads/main/chain-specs/polkadot/polimec-raw-chain-spec.json",
