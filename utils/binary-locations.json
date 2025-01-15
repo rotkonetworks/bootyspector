@@ -6,6 +6,10 @@
   "hydration": "https://github.com/galacticcouncil/hydration-node/releases/download/v33.0.0/hydradx",
   "moonbeam": "https://github.com/moonbeam-foundation/moonbeam/releases/download/v0.42.1/moonbeam",
   "hyperbridge": "https://github.com/polytope-labs/hyperbridge/releases/download/hyperbridge-v1.0.0/hyperbridge-x86_64-unknown-linux-gnu.tar.gz",
-  "kilt": "https://github.com/KILTprotocol/kilt-node",
-  "acala": "https://github.com/AcalaNetwork/Acala"
+  "kilt": "https://github.com/KILTprotocol/kilt-node/releases",
+  "acala": "https://github.com/AcalaNetwork/Acala/releases",
+  "bifrost": "https://github.com/bifrost-io/bifrost/releases/download/bifrost-v0.16.1/bifrost",
+  "invarch": "https://github.com/AbstractedCo/InvArch/releases/download/v1.2.3-InvArch/invarch-collator",
+  "polimec": "https://github.com/Polimec/polimec-node/releases/download/v0.8.0/polimec-node",
+  "unique": "https://github.com/UniqueNetwork/unique-chain/releases/download/v10030070/unique-collator-v10030070"
 }

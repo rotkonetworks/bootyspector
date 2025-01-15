@@ -62,5 +62,54 @@
   "acala": {
     "acala": "https://raw.githubusercontent.com/AcalaNetwork/Acala/refs/heads/master/resources/acala-dist.json",
     "karura": "https://raw.githubusercontent.com/AcalaNetwork/Acala/refs/heads/master/resources/karura-dist.json"
+  },
+  "ajuna": {
+    "ajuna": "https://raw.githubusercontent.com/ajuna-network/ajuna-parachain/refs/heads/develop/resources/ajuna/ajuna-raw.json",
+    "polkadot": "https://raw.githubusercontent.com/ajuna-network/ajuna-parachain/refs/heads/develop/resources/ajuna/polkadot.json",
+    "ajuna-paseo": "https://raw.githubusercontent.com/ajuna-network/ajuna-parachain/refs/heads/develop/resources/ajuna/paseo/ajuna-paseo.json",
+    "paseo": "https://raw.githubusercontent.com/ajuna-network/ajuna-parachain/refs/heads/develop/resources/ajuna/paseo/paseo.json",
+    "ajuna-westend": "https://raw.githubusercontent.com/ajuna-network/ajuna-parachain/refs/heads/develop/resources/ajuna/westend/ajuna-westend.json",
+    "westend": "https://raw.githubusercontent.com/ajuna-network/ajuna-parachain/refs/heads/develop/resources/ajuna/westend/westend.json"
+  },
+  "bifrost": {
+    "bifrost-polkadot": "https://raw.githubusercontent.com/bifrost-io/bifrost/refs/heads/develop/node/service/res/bifrost-polkadot.json",
+    "bifrost-kusama": "https://raw.githubusercontent.com/bifrost-io/bifrost/refs/heads/develop/node/service/res/bifrost-kusama.json",
+    "bifrost-paseo": "https://raw.githubusercontent.com/bifrost-io/bifrost/refs/heads/develop/node/service/res/bifrost-paseo.json"
+  },
+  "hydration": {
+    "hydradx": "https://raw.githubusercontent.com/galacticcouncil/hydration-node/refs/heads/master/node/res/hydradx.json",
+    "moonbase": "https://raw.githubusercontent.com/galacticcouncil/hydration-node/refs/heads/master/node/res/moonbase.json",
+    "rococo": "https://raw.githubusercontent.com/galacticcouncil/hydration-node/refs/heads/master/node/res/rococo.json"
+  },
+  "invarch": {
+    "invarch": "https://raw.githubusercontent.com/AbstractedCo/InvArch/refs/heads/main/res/invarch/invarch-raw.json",
+    "brainstorm": "https://raw.githubusercontent.com/AbstractedCo/InvArch/refs/heads/main/res/brainstorm/brainstorm2-raw.json",
+    "tinker": "https://raw.githubusercontent.com/AbstractedCo/InvArch/refs/heads/main/res/tinker/tinker-raw.json"
+  },
+  "hyperbridge": {
+    "nexus": "https://raw.githubusercontent.com/polytope-labs/hyperbridge/refs/heads/main/parachain/chainspec/nexus.json",
+    "messier": "https://raw.githubusercontent.com/polytope-labs/hyperbridge/refs/heads/main/parachain/chainspec/messier.json",
+    "paseo": "https://raw.githubusercontent.com/polytope-labs/hyperbridge/refs/heads/main/parachain/chainspec/paseo.raw.json",
+    "gargantua": "https://raw.githubusercontent.com/polytope-labs/hyperbridge/refs/heads/main/parachain/chainspec/gargantua.paseo.json"
+  },
+  "kilt": {
+    "spiritnet": "https://raw.githubusercontent.com/KILTprotocol/kilt-node/refs/heads/master/chainspecs/spiritnet/spiritnet.json",
+    "rilt": "https://raw.githubusercontent.com/KILTprotocol/kilt-node/refs/heads/master/chainspecs/rilt/peregrine-rilt.json",
+    "peregrine": "https://raw.githubusercontent.com/KILTprotocol/kilt-node/refs/heads/master/chainspecs/peregrine/peregrine-paseo.json"
+  },
+  "moonbeam": {
+    "moonbeam": "https://raw.githubusercontent.com/moonbeam-foundation/moonbeam/refs/heads/master/specs/moonbeam/parachain-embedded-specs.json",
+    "moonriver": "https://raw.githubusercontent.com/moonbeam-foundation/moonbeam/refs/heads/master/specs/moonriver/parachain-embedded-specs.json",
+    "moonbase alpha": "https://raw.githubusercontent.com/moonbeam-foundation/moonbeam/refs/heads/master/specs/alphanet/parachain-embedded-specs-v8.json"
+  },
+  "polimec": {
+    "polimec-polkadot": "https://raw.githubusercontent.com/Polimec/polimec-node/refs/heads/main/chain-specs/polkadot/polimec-raw-chain-spec.json",
+    "polimec-paseo": "https://raw.githubusercontent.com/Polimec/polimec-node/refs/heads/main/chain-specs/paseo/polimec-paseo.spec.raw.json"
+  },
+  "unique": {
+    "unique": "https://github.com/UniqueNetwork/unique-chain/raw/refs/heads/develop/chain-specs/unique.json",
+    "quartz": "https://raw.githubusercontent.com/UniqueNetwork/unique-chain/refs/heads/develop/chain-specs/quartz.json",
+    "polkadot": "https://raw.githubusercontent.com/UniqueNetwork/unique-chain/refs/heads/develop/chain-specs/polkadot.json",
+    "kusama": "https://raw.githubusercontent.com/UniqueNetwork/unique-chain/refs/heads/develop/chain-specs/kusama.json"
   }
 }
