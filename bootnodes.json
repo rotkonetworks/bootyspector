@@ -205,5 +205,68 @@
         "/dns/coretime-paseo.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWELkr2WfNmAB399CUMpujUZ5Wi87JyCivi8cQ8vonYufF"
       ]
     }
+  },
+  "ajuna": {
+    "commandId": "",
+    "members": {
+      "rotko": [
+        "/dns/ajuna.boot.rotko.net/tcp/31271/p2p/12D3KooWC4Ysv5PpBCwVWpBNSBDQab9bEiYj82QqvbPytDXsJ4HK",
+        "/dns/ajuna.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWC4Ysv5PpBCwVWpBNSBDQab9bEiYj82QqvbPytDXsJ4HK"
+      ]
+    }
+  },
+  "bifrost": {
+    "commandId": "",
+    "members": {
+      "rotko": [
+        "/dns/bifrost.boot.rotko.net/tcp/31261/p2p/12D3KooWJgq7vQ3Dkh4gXbc3HZeJpoL5xqZibFxFej6gXMsQv5Sa",
+        "/dns/bifrost.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWJgq7vQ3Dkh4gXbc3HZeJpoL5xqZibFxFej6gXMsQv5Sa"
+      ]
+    }
+  },
+  "hydration": {
+    "commandId": "",
+    "members": {
+      "rotko": [
+        "/dns/hydration.boot.rotko.net/tcp/31251/p2p/12D3KooWHLbZ811QkGTJXyzShm6QsaF3zb9DtcEBvE4e1QUb9fqD",
+        "/dns/hydration.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWHLbZ811QkGTJXyzShm6QsaF3zb9DtcEBvE4e1QUb9fqD"
+      ]
+    }
+  },
+  "kilt": {
+    "commandId": "",
+    "members": {
+      "rotko": [
+        "/dns/kilt.boot.rotko.net/tcp/31241/p2p/12D3KooWCfejSj5BGWP3qM1JQYDRzjQGav3QGobkV2WBVQmpELuW",
+        "/dns/kilt.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWCfejSj5BGWP3qM1JQYDRzjQGav3QGobkV2WBVQmpELuW"
+      ]
+    }
+  },
+  "moonbeam": {
+    "commandId": "",
+    "members": {
+      "rotko": [
+        "/dns/moonbeam.boot.rotko.net/tcp/31201/p2p/12D3KooWMH4vU7Ect6bc6GzhCS39Y5wUKC3u7euUpsxnAvqTyJyE",
+        "/dns/moonbeam.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWMH4vU7Ect6bc6GzhCS39Y5wUKC3u7euUpsxnAvqTyJyE"
+      ]
+    }
+  },
+  "polimec": {
+    "commandId": "",
+    "members": {
+      "rotko": [
+        "/dns/polimec.boot.rotko.net/tcp/31281/p2p/12D3KooWA3KE58jH4vuApTwKhteixuMZusjLp8K7KdfcUP2Cf9Xu",
+        "/dns/polimec.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWA3KE58jH4vuApTwKhteixuMZusjLp8K7KdfcUP2Cf9Xu"
+      ]
+    }
+  },
+  "unique": {
+    "commandId": "",
+    "members": {
+      "rotko": [
+        "/dns/unique.boot.rotko.net/tcp/31281/p2p/12D3KooWEhC6CR29am6vaSdXsFyCCm2zzjwvc4FKaLkqoWBWKK5m",
+        "/dns/unique.boot.rotko.net/tcp/30435/wss/p2p/12D3KooWEhC6CR29am6vaSdXsFyCCm2zzjwvc4FKaLkqoWBWKK5m"
+      ]
+    }
   }
 }
