@@ -155,6 +155,13 @@ async fn run_test_cycle(
                     &test_result,
                 )
                 .await?;
+                update_status(
+                    &cli.output_dir.join("bootnodes-status.json"),
+                    &test_result.id,
+                    &test_result.network,
+                    &test_result,
+                )
+                .await?;
             }
             Err(e) => {
                 error!("Test failed: {}", e);
@@ -208,6 +215,64 @@ async fn update_results(
     Ok(())
 }
 
+/// per-multiaddr status, keyed by network -> operator -> multiaddr.
+/// mirrors the shape of bootnodes.json so it can be diffed/joined directly.
+/// not deduplicated by (op, net) like results.json, so every transport
+/// (tcp/wss) gets its own verdict.
+async fn update_status(
+    output_file: &Path,
+    operator: &str,
+    network: &str,
+    result: &TestResult,
+) -> Result<()> {
+    let content = if output_file.exists() {
+        fs::read_to_string(output_file)?
+    } else {
+        "{}".to_string()
+    };
+
+    let mut json: serde_json::Value = serde_json::from_str(&content)?;
+
+    if let serde_json::Value::Object(ref mut map) = json {
+        let net_obj = map
+            .entry(network)
+            .or_insert(serde_json::json!({}))
+            .as_object_mut()
+            .context("Invalid JSON structure (network)")?;
+        let op_obj = net_obj
+            .entry(operator)
+            .or_insert(serde_json::json!({}))
+            .as_object_mut()
+            .context("Invalid JSON structure (operator)")?;
+
+        let status_str = match result.status {
+            metrics::TestStatus::Success => "success",
+            metrics::TestStatus::MetricsUnavailable => "metrics_unavailable",
+            metrics::TestStatus::NoMetricFound => "no_metric_found",
+            metrics::TestStatus::Timeout => "timeout",
+            metrics::TestStatus::NodeStartupFailed => "node_startup_failed",
+            metrics::TestStatus::InsufficientPeers => "insufficient_peers",
+        };
+
+        op_obj.insert(
+            result.bootnode.clone(),
+            serde_json::json!({
+                "working": result.valid,
+                "status": status_str,
+                "duration_ms": result.test_duration_ms,
+                "error": result.error_details,
+            }),
+        );
+    }
+
+    let tmp_file = output_file.with_extension("status.tmp");
+    let mut file = File::create(&tmp_file)?;
+    file.write_all(serde_json::to_string_pretty(&json)?.as_bytes())?;
+    fs::rename(tmp_file, output_file)?;
+
+    Ok(())
+}
+
 #[tokio::main]
 async fn main() -> Result<()> {
     // install rustls crypto provider for websocket TLS support
@@ -215,12 +280,17 @@ async fn main() -> Result<()> {
 
     let cli = Cli::load()?;
 
-    let log_level = if cli.debug {
-        tracing::Level::DEBUG
+    // keep our own crate at info/debug but mute the libp2p/smoldot firehose.
+    // a single test cycle at default `info` was producing 40+ GB of logs from
+    // litep2p trace events; RUST_LOG still overrides if you want it back.
+    let default_filter = if cli.debug {
+        "debug,litep2p=info,smoldot=info,warp=info"
     } else {
-        tracing::Level::INFO
+        "info,litep2p=warn,smoldot=warn,warp=warn"
     };
-    tracing_subscriber::fmt().with_max_level(log_level).init();
+    let filter = tracing_subscriber::EnvFilter::try_from_default_env()
+        .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new(default_filter));
+    tracing_subscriber::fmt().with_env_filter(filter).init();
 
     // initialize database
     let db_path = cli.database.to_str().unwrap_or("bootyspector.db");

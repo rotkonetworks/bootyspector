@@ -1,8 +1,9 @@
 // bootnode_p2p.rs - bootnode testing using litep2p (no binary required)
 use anyhow::{Context, Result};
 use litep2p::types::multiaddr::Multiaddr;
+use rand::Rng;
 use std::time::{Duration, Instant};
-use tracing::{error, info};
+use tracing::{error, info, warn};
 
 use crate::{
     cli::Cli,
@@ -51,35 +52,65 @@ pub async fn test_bootnode_p2p(
 
     info!("using protocol ID: {} for network: {}", protocol_id, network);
 
-    // create p2p client and connect to bootnode
-    let mut p2p_client = match P2PClient::new(&protocol_id, bootnode_addr).await {
+    let first = attempt(cli, operator, network, bootnode, &bootnode_addr, &protocol_id).await;
+    if first.valid {
+        return Ok(finalize(operator, network, bootnode, first, start_time));
+    }
+
+    // retry once on failure to separate transient flakes from real outages.
+    // jitter avoids 8 retries hitting the same operator in the same instant
+    // when concurrency is high.
+    let jitter_ms = rand::thread_rng().gen_range(500..2500);
+    warn!(
+        "↻ retrying {}/{} after {}ms (first attempt: {:?})",
+        operator, network, jitter_ms, first.status
+    );
+    tokio::time::sleep(Duration::from_millis(jitter_ms)).await;
+
+    let second = attempt(cli, operator, network, bootnode, &bootnode_addr, &protocol_id).await;
+    Ok(finalize(operator, network, bootnode, second, start_time))
+}
+
+struct AttemptResult {
+    valid: bool,
+    discovered_peers: u64,
+    status: TestStatus,
+    error_details: Option<String>,
+}
+
+async fn attempt(
+    cli: &Cli,
+    operator: &str,
+    network: &str,
+    bootnode: &str,
+    bootnode_addr: &Multiaddr,
+    protocol_id: &str,
+) -> AttemptResult {
+    let mut p2p_client = match P2PClient::new(protocol_id, bootnode_addr.clone()).await {
         Ok(client) => client,
         Err(e) => {
             error!(
                 "{} Failed to create p2p client for {}/{}: {}",
                 EMOJI_ERROR, operator, network, e
             );
-            return Ok(TestResult {
-                id: operator.to_string(),
-                network: network.to_string(),
-                bootnode: bootnode.to_string(),
+            return AttemptResult {
                 valid: false,
-                test_duration_ms: start_time.elapsed().as_millis() as u64,
                 discovered_peers: 0,
                 status: TestStatus::NodeStartupFailed,
                 error_details: Some(e.to_string()),
-            });
+            };
         }
     };
 
     // run peer discovery; exit as soon as min_peers are connected past the
     // stabilization window so healthy bootnodes don't sit the full timeout.
-    // 3s stabilization gives Kademlia time to round-trip after connection.
+    // 5s stabilization gives Noise + protocol negotiation time to complete
+    // on slower operators (3s was too tight; uniformly failed amforc).
     let discovery_result = match p2p_client
         .discover_peers(
             Duration::from_secs(cli.timeout),
             cli.min_peers as usize,
-            Duration::from_secs(3),
+            Duration::from_secs(5),
         )
         .await
     {
@@ -89,53 +120,60 @@ pub async fn test_bootnode_p2p(
                 "{} Peer discovery failed for {}/{}: {}",
                 EMOJI_ERROR, operator, network, e
             );
-            return Ok(TestResult {
-                id: operator.to_string(),
-                network: network.to_string(),
-                bootnode: bootnode.to_string(),
+            return AttemptResult {
                 valid: false,
-                test_duration_ms: start_time.elapsed().as_millis() as u64,
                 discovered_peers: 0,
                 status: TestStatus::MetricsUnavailable,
                 error_details: Some(e.to_string()),
-            });
+            };
         }
     };
 
-    let test_duration_ms = start_time.elapsed().as_millis() as u64;
     let discovered_peers = discovery_result.discovered_peers as u64;
     let connected_peers = discovery_result.connected_peers as u64;
-
-    // A bootnode is functional if we can connect to it and it responds to identify
-    // The fact that DHT queries may fail is due to bootnode policies (restricting peer sharing
-    // to full nodes), not a bootnode failure. If we connected and identified, it's working.
     let valid = connected_peers >= 1;
     let status = if valid {
         TestStatus::Success
     } else if discovered_peers == 0 {
         TestStatus::Timeout
     } else {
-        TestStatus::InsufficientPeers // discovered but couldn't connect
+        TestStatus::InsufficientPeers
     };
 
-    info!(
-        "{} Bootnode test completed for {}/{}: {} discovered, {} connected in {}ms",
-        if valid { EMOJI_SUCCESS } else { EMOJI_ERROR },
-        operator,
-        network,
-        discovered_peers,
-        connected_peers,
-        test_duration_ms
-    );
-
-    Ok(TestResult {
-        id: operator.to_string(),
-        network: network.to_string(),
-        bootnode: bootnode.to_string(),
+    let _ = bootnode; // suppress unused in attempt; consumed by finalize via outer scope
+    AttemptResult {
         valid,
-        test_duration_ms,
         discovered_peers,
         status,
         error_details: None,
-    })
+    }
+}
+
+fn finalize(
+    operator: &str,
+    network: &str,
+    bootnode: &str,
+    a: AttemptResult,
+    start_time: Instant,
+) -> TestResult {
+    let test_duration_ms = start_time.elapsed().as_millis() as u64;
+    info!(
+        "{} Bootnode test completed for {}/{}: {} discovered, valid={} in {}ms",
+        if a.valid { EMOJI_SUCCESS } else { EMOJI_ERROR },
+        operator,
+        network,
+        a.discovered_peers,
+        a.valid,
+        test_duration_ms
+    );
+    TestResult {
+        id: operator.to_string(),
+        network: network.to_string(),
+        bootnode: bootnode.to_string(),
+        valid: a.valid,
+        test_duration_ms,
+        discovered_peers: a.discovered_peers,
+        status: a.status,
+        error_details: a.error_details,
+    }
 }

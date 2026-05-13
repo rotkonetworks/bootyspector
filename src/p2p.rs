@@ -272,17 +272,17 @@ impl P2PClient {
                         Some(KademliaEvent::FindNodeSuccess { target, peers, query_id: _ }) => {
                             info!(target: LOG_TARGET, "find_node success for {}, discovered {} peers", target, peers.len());
                             for (peer, addresses) in peers {
-                                info!(target: LOG_TARGET, "  discovered peer: {} with {} addresses", peer, addresses.len());
+                                debug!(target: LOG_TARGET, "  discovered peer: {} with {} addresses", peer, addresses.len());
                                 for addr in &addresses {
-                                    info!(target: LOG_TARGET, "    address: {}", addr);
+                                    debug!(target: LOG_TARGET, "    address: {}", addr);
                                 }
                                 discovered_peers.insert(peer);
                             }
                         }
                         Some(KademliaEvent::RoutingTableUpdate { peers }) => {
-                            info!(target: LOG_TARGET, "routing table updated with {} peers", peers.len());
+                            debug!(target: LOG_TARGET, "routing table updated with {} peers", peers.len());
                             for peer in &peers {
-                                info!(target: LOG_TARGET, "  peer added to routing table: {}", peer);
+                                debug!(target: LOG_TARGET, "  peer added to routing table: {}", peer);
                                 discovered_peers.insert(*peer);
                             }
                         }
