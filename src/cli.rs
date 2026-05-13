@@ -44,7 +44,7 @@ pub struct Cli {
     pub prometheus_port: u16,
 
     /// test ttl in seconds
-    #[arg(long, default_value = "30")]
+    #[arg(long, default_value = "60")]
     pub timeout: u64,
 
     /// path to the bootnodes config file
