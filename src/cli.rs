@@ -11,17 +11,9 @@ use std::{fs, path::PathBuf};
     about = "Parallel bootnode tester for Polkadot networks"
 )]
 pub struct Cli {
-    /// path to the polkadot binary
-    #[arg(long, default_value = "/usr/local/bin/polkadot")]
-    pub polkadot_binary: PathBuf,
-
-    /// path to the parachain binary
-    #[arg(long, default_value = "/usr/local/bin/polkadot-parachain")]
-    pub parachain_binary: PathBuf,
-
-    /// path to the encointer binary
-    #[arg(long, default_value = "/usr/local/bin/encointer")]
-    pub encointer_binary: PathBuf,
+    /// path to the polkadot-omni-node binary
+    #[arg(long, default_value = "/usr/local/bin/polkadot-omni-node")]
+    pub node_binary: PathBuf,
 
     #[arg(long, default_value = "/tmp/bootnode_tests")]
     pub output_dir: PathBuf,
@@ -38,7 +30,7 @@ pub struct Cli {
     pub max_concurrent: usize,
 
     /// minimum number of peers to pass
-    #[arg(long, default_value = "2")]
+    #[arg(long, default_value = "1")]
     pub min_peers: u64,
 
     /// test interval in seconds
@@ -64,12 +56,23 @@ pub struct Cli {
 
     #[arg(long)]
     pub debug: bool,
+
+    /// use smoldot light client instead of litep2p
+    #[arg(long)]
+    pub use_smoldot: bool,
+
+    /// path to SQLite database file
+    #[arg(long, default_value = "bootyspector.db")]
+    pub database: PathBuf,
+
+    /// sync chain specs from Parity repo before testing
+    #[arg(long)]
+    pub sync: bool,
 }
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct TomlConfig {
-    pub polkadot_binary: Option<PathBuf>,
-    pub parachain_binary: Option<PathBuf>,
+    pub node_binary: Option<PathBuf>,
     pub output_dir: Option<PathBuf>,
     pub data_dir: Option<PathBuf>,
     pub chain_spec_dir: Option<PathBuf>,
@@ -87,18 +90,13 @@ pub struct BootnodesConfig {
 
 #[derive(Debug, Deserialize)]
 pub struct NetworkConfig {
-    #[serde(rename = "commandId")]
-    pub command_id: String,
     pub members: std::collections::HashMap<String, Vec<String>>,
 }
 
 impl Cli {
     pub fn merge_with_toml(&mut self, config: TomlConfig) {
-        if let Some(v) = config.polkadot_binary {
-            self.polkadot_binary = v;
-        }
-        if let Some(v) = config.parachain_binary {
-            self.parachain_binary = v;
+        if let Some(v) = config.node_binary {
+            self.node_binary = v;
         }
         if let Some(v) = config.output_dir {
             self.output_dir = v;

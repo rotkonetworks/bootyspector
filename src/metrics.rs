@@ -50,6 +50,7 @@ pub enum TestStatus {
     NoMetricFound,
     Timeout,
     NodeStartupFailed,
+    InsufficientPeers,
 }
 
 #[derive(Debug, Serialize)]
@@ -117,6 +118,7 @@ impl MetricsState {
                 TestStatus::MetricsUnavailable => "metrics_unavailable",
                 TestStatus::NoMetricFound => "no_metrics",
                 TestStatus::Timeout => "timeout",
+                TestStatus::InsufficientPeers => "insufficient_peers",
                 TestStatus::Success => unreachable!(),
             }
         };

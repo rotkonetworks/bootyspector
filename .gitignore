@@ -1,1 +1,8 @@
 /target
+/wasm/target
+/frontend/node_modules
+/frontend/dist
+node_modules
+*.db
+.env
+_*.tmp

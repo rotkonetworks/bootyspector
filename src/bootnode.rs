@@ -54,22 +54,9 @@ pub async fn spawn_node(
     operator: &str,
     network: &str,
     bootnode: &str,
-    command_id: &str,
 ) -> Result<NodeProcess> {
     let data_dir = cli.data_dir.join(format!("{}_{}", operator, network));
     std::fs::create_dir_all(&data_dir)?;
-
-    let relaychain = if command_id == "parachain" {
-        Some(network.split('-').last().context("Invalid network name")?)
-    } else {
-        None
-    };
-
-    let binary = if command_id == "parachain" {
-        &cli.parachain_binary
-    } else {
-        &cli.polkadot_binary
-    };
 
     let chain_spec = cli.chain_spec_dir.join(format!("{}.json", network));
     if !chain_spec.exists() {
@@ -84,27 +71,20 @@ pub async fn spawn_node(
         EMOJI_ROCKET, operator, network, EMOJI_NETWORK, prometheus_port, p2p_port
     );
 
-    let mut cmd = Command::new(binary);
-    cmd.args(&[
-        "--no-hardware-benchmarks",
-        "--no-mdns",
-        "--prometheus-external",
-        &format!("--prometheus-port={}", prometheus_port),
-        &format!("--port={}", p2p_port),
-        "-d",
-    ])
-    .arg(&data_dir)
-    .arg("--chain")
-    .arg(&chain_spec)
-    .arg("--bootnodes")
-    .arg(bootnode);
-
-    if let Some(relay) = relaychain {
-        cmd.arg("--relay-chain-rpc-urls")
-            .arg(format!("wss://{}.dotters.network/", relay));
-    }
-
-    let process = cmd
+    let process = Command::new(&cli.node_binary)
+        .args(&[
+            "--no-hardware-benchmarks",
+            "--no-mdns",
+            "--prometheus-external",
+            &format!("--prometheus-port={}", prometheus_port),
+            &format!("--port={}", p2p_port),
+            "-d",
+        ])
+        .arg(&data_dir)
+        .arg("--chain")
+        .arg(&chain_spec)
+        .arg("--bootnodes")
+        .arg(bootnode)
         .stdout(Stdio::null())
         .stderr(Stdio::null())
         .spawn()
@@ -358,7 +338,6 @@ pub async fn test_bootnode(
     operator: &str,
     network: &str,
     bootnode: &str,
-    command_id: &str,
 ) -> Result<TestResult> {
     let start_time = Instant::now();
 
@@ -367,7 +346,7 @@ pub async fn test_bootnode(
         EMOJI_LOADING, bootnode, operator, network
     );
 
-    let mut node = match spawn_node(cli, operator, network, bootnode, command_id).await {
+    let mut node = match spawn_node(cli, operator, network, bootnode).await {
         Ok(node) => node,
         Err(e) => {
             error!(

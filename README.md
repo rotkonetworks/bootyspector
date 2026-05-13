@@ -1,15 +1,16 @@
 # bootyspector
 
-# With default settings
+## usage
+
+### with default settings
 ```
 cargo run --release
 ```
 
-# With custom settings
+### with custom settings
 ```
 cargo run --release -- \
-  --polkadot-binary /path/to/polkadot \
-  --parachain-binary /path/to/polkadot-parachain \
+  --node-binary /path/to/polkadot-omni-node \
   --output-dir /custom/output \
   --data-dir /custom/data \
   --chain-spec-dir /custom/specs \
@@ -20,7 +21,11 @@ cargo run --release -- \
   --debug
 ```
 
-# prometheus alerting rules:
+## binary requirements
+
+uses polkadot-omni-node (from polkadot-stable2509-1+) which handles all networks with the appropriate chainspecs. the omni-node replaces the need for separate relay chain and parachain binaries.
+
+## prometheus alerting rules
 
 ```yaml
 groups:
