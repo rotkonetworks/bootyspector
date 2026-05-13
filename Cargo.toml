@@ -19,12 +19,12 @@ tracing-subscriber = "0.3"
 warp = "0.3"
 
 # litep2p dependencies
-litep2p = { version = "0.10", features = ["websocket", "quic"] }
+litep2p = { version = "0.14", features = ["websocket", "quic"] }
 rustls = { version = "0.23", default-features = true, features = ["ring"] }
 
 # smoldot light client
-smoldot-light = "0.18"
-smoldot = "0.18"
+smoldot-light = "1.1"
+smoldot = "1.1"
 futures-util = "0.3"
 
 # database

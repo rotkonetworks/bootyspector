@@ -67,6 +67,7 @@ pub async fn test_bootnode_smoldot(
         potential_relay_chains: core::iter::empty(),
         database_content: "",
         user_data: (),
+        statement_protocol_config: None,
     });
 
     let (chain_id, mut json_rpc_responses) = match add_result {
