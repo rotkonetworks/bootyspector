@@ -281,12 +281,14 @@ async fn main() -> Result<()> {
     let cli = Cli::load()?;
 
     // keep our own crate at info/debug but mute the libp2p/smoldot firehose.
-    // a single test cycle at default `info` was producing 40+ GB of logs from
-    // litep2p trace events; RUST_LOG still overrides if you want it back.
+    // litep2p::transport-service emits a "transport service closed" WARN
+    // every time a litep2p instance drops — with 8x concurrency and 200
+    // tests, each dropping ~50 transport-service instances, that alone
+    // produces 80k+ WARN lines per cycle. Pin litep2p/smoldot at error.
     let default_filter = if cli.debug {
         "debug,litep2p=info,smoldot=info,warp=info"
     } else {
-        "info,litep2p=warn,smoldot=warn,warp=warn"
+        "info,litep2p=error,smoldot=error,warp=warn"
     };
     let filter = tracing_subscriber::EnvFilter::try_from_default_env()
         .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new(default_filter));

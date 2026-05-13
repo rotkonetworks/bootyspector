@@ -43,6 +43,10 @@ pub struct PeerDiscoveryResult {
     pub discovered_peers: usize,
     pub connected_peers: usize,
     pub duration_ms: u64,
+    /// first observed dial failure to the bootnode itself (e.g. PeerIdMismatch,
+    /// NoiseHandshake) — surfaces actionable info to the test result when the
+    /// bootnode is reachable at TCP but rejects the substrate connection.
+    pub bootnode_dial_error: Option<String>,
 }
 
 impl P2PClient {
@@ -178,6 +182,8 @@ impl P2PClient {
         let mut connected_peers = HashSet::new();
         let mut ever_connected_peers = HashSet::new();  // track peers that ever connected
         let mut bootnode_connected = false;
+        let mut bootnode_dial_error: Option<String> = None;
+        let bootnode_peer_str = self.bootnode_peer.to_string();
 
         // add bootnode to discovered
         discovered_peers.insert(self.bootnode_peer);
@@ -216,17 +222,17 @@ impl P2PClient {
                         user_agent,
                         supported_protocols,
                         listen_addresses,
-                        observed_address,
+                        observed_address: _,
                     }) = identify_event {
-                        info!(target: LOG_TARGET, "✓ peer identified: {}", peer);
+                        debug!(target: LOG_TARGET, "✓ peer identified: {}", peer);
                         if let Some(agent) = &user_agent {
-                            info!(target: LOG_TARGET, "  agent: {}", agent);
+                            debug!(target: LOG_TARGET, "  agent: {}", agent);
                         }
                         if let Some(proto_ver) = &protocol_version {
-                            info!(target: LOG_TARGET, "  protocol: {}", proto_ver);
+                            debug!(target: LOG_TARGET, "  protocol: {}", proto_ver);
                         }
-                        info!(target: LOG_TARGET, "  supports {} protocols", supported_protocols.len());
-                        info!(target: LOG_TARGET, "  listening on {} addresses", listen_addresses.len());
+                        debug!(target: LOG_TARGET, "  supports {} protocols, listening on {} addresses",
+                            supported_protocols.len(), listen_addresses.len());
                         for addr in &listen_addresses {
                             debug!(target: LOG_TARGET, "    - {}", addr);
                         }
@@ -238,27 +244,34 @@ impl P2PClient {
                 event = self.litep2p.next_event() => {
                     match event {
                         Some(Litep2pEvent::ConnectionEstablished { peer, endpoint }) => {
-                            info!(target: LOG_TARGET, "connection established with peer {} at {:?}", peer, endpoint);
+                            debug!(target: LOG_TARGET, "connection established with peer {} at {:?}", peer, endpoint);
                             connected_peers.insert(peer);
                             ever_connected_peers.insert(peer);
 
                             // if this is the bootnode connection, wait a bit then start DHT query
                             if peer == self.bootnode_peer && !bootnode_connected {
                                 bootnode_connected = true;
-                                info!(target: LOG_TARGET, "bootnode connected, waiting 2s before DHT query");
+                                debug!(target: LOG_TARGET, "bootnode connected, waiting 2s before DHT query");
                                 tokio::time::sleep(Duration::from_secs(2)).await;
-                                info!(target: LOG_TARGET, "starting DHT query for random peer");
+                                debug!(target: LOG_TARGET, "starting DHT query for random peer");
                                 // Query for a random peer ID to discover network peers
                                 let random_peer = litep2p::PeerId::random();
                                 let _query_id = self.kad_handle.find_node(random_peer).await;
                             }
                         }
                         Some(Litep2pEvent::ConnectionClosed { peer, connection_id: _ }) => {
-                            info!(target: LOG_TARGET, "connection closed with peer {}", peer);
+                            debug!(target: LOG_TARGET, "connection closed with peer {}", peer);
                             connected_peers.remove(&peer);
                         }
                         Some(Litep2pEvent::DialFailure { address, error }) => {
-                            warn!(target: LOG_TARGET, "dial failure to {}: {:?}", address, error);
+                            // capture the first dial-failure that targets the bootnode itself
+                            // so the test result can surface the actionable error (PeerIdMismatch,
+                            // Noise handshake failure, etc) instead of a generic InsufficientPeers.
+                            let addr_str = address.to_string();
+                            if bootnode_dial_error.is_none() && addr_str.contains(&bootnode_peer_str) {
+                                bootnode_dial_error = Some(format!("{:?}", error));
+                            }
+                            debug!(target: LOG_TARGET, "dial failure to {}: {:?}", address, error);
                         }
                         None => {
                             debug!(target: LOG_TARGET, "litep2p stream ended");
@@ -270,7 +283,7 @@ impl P2PClient {
                 kad_event = self.kad_handle.next() => {
                     match kad_event {
                         Some(KademliaEvent::FindNodeSuccess { target, peers, query_id: _ }) => {
-                            info!(target: LOG_TARGET, "find_node success for {}, discovered {} peers", target, peers.len());
+                            debug!(target: LOG_TARGET, "find_node success for {}, discovered {} peers", target, peers.len());
                             for (peer, addresses) in peers {
                                 debug!(target: LOG_TARGET, "  discovered peer: {} with {} addresses", peer, addresses.len());
                                 for addr in &addresses {
@@ -310,23 +323,23 @@ impl P2PClient {
         );
 
         if !discovered_peers.is_empty() {
-            info!(target: LOG_TARGET, "discovered peers:");
+            debug!(target: LOG_TARGET, "discovered peers: {}", discovered_peers.len());
             for peer in &discovered_peers {
-                info!(target: LOG_TARGET, "  - {}", peer);
+                debug!(target: LOG_TARGET, "  - {}", peer);
             }
         }
 
         if !connected_peers.is_empty() {
-            info!(target: LOG_TARGET, "currently connected peers:");
+            debug!(target: LOG_TARGET, "currently connected peers: {}", connected_peers.len());
             for peer in &connected_peers {
-                info!(target: LOG_TARGET, "  - {}", peer);
+                debug!(target: LOG_TARGET, "  - {}", peer);
             }
         }
 
         if !ever_connected_peers.is_empty() {
-            info!(target: LOG_TARGET, "peers that connected during test:");
+            debug!(target: LOG_TARGET, "peers that connected during test: {}", ever_connected_peers.len());
             for peer in &ever_connected_peers {
-                info!(target: LOG_TARGET, "  - {}", peer);
+                debug!(target: LOG_TARGET, "  - {}", peer);
             }
         }
 
@@ -334,6 +347,7 @@ impl P2PClient {
             discovered_peers: discovered_peers.len(),
             connected_peers: ever_connected_peers.len(),  // use ever_connected instead
             duration_ms,
+            bootnode_dial_error,
         })
     }
 }
