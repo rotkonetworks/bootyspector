@@ -145,7 +145,11 @@ async fn attempt(
         valid,
         discovered_peers,
         status,
-        error_details: None,
+        // surface the first dial-failure against the bootnode itself if any
+        // (e.g. PeerIdMismatch — bootnode peer id rotated but the multiaddr
+        // entry in bootnodes.json wasn't updated). Without this, failures
+        // come back as a generic "insufficient_peers" with no error string.
+        error_details: if valid { None } else { discovery_result.bootnode_dial_error },
     }
 }
 
